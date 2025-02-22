@@ -1,0 +1,8 @@
+<div *ngIf="authService?.user?.profile" class="card" style="width: 10rem;">
+  <img *ngIf="authService?.user?.profile?.picture" class="card-img-top" src="{{authService?.user?.profile?.picture}}" alt="Profile picture of {{authService?.user?.profile?.name}}">
+  <div class="card-body">
+    <h5 class="card-title">{{authService?.user?.profile?.name}}</h5>
+    <p class="card-text">{{authService?.user?.profile?.email}}</p>
+    <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+  </div>
+</div>

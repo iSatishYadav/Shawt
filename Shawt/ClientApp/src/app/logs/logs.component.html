@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="page-header">
+    <wbr />
+    <h1>
+      Usage Dashboard
+      <small>
+        <a routerLink="/links">
+          or go back to my links
+        </a>
+      </small>
+    </h1>
+    <div class="breadcrumb">
+      <a href="{{link?.shortLink}}" target="_blank">{{link?.shortLink}}</a>
+      =>{{link?.originalLink}}
+    </div>
+  </div>
+  <p *ngIf="!logs">
+    Please wait while we fetch your logs...
+  </p>
+  <wbr />
+  <!--<ol class="breadcrumb">
+    <li><a routerLink="/">Home</a></li>
+    <li><a routerLink="/links">Links</a></li>
+  </ol>-->
+  <div *ngIf="timeSeries" class="row">
+    <div class="col-md-12">
+      <div class="card panel-default">
+        <div class="card-header">
+          <h4 class="card-title">Clicks' trend</h4>
+        </div>
+        <div class="card-body">
+          <ngx-charts-line-chart [results]="timeSeries"
+                                 [legend]="legend"
+                                 [showXAxisLabel]="showXAxisLabel"
+                                 [showYAxisLabel]="showYAxisLabel"
+                                 [xAxis]="xAxis"
+                                 [yAxis]="yAxis"
+                                 [xAxisLabel]="xAxisLabel"
+                                 [yAxisLabel]="yAxisLabel"
+                                 [timeline]="timeline">
+          </ngx-charts-line-chart>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="card panel-default" *ngIf="osPieData">
+        <div class="card-header">
+          <h4 class="card-title">Clicks by Operating Systems</h4>
+        </div>
+        <div class="card-body">
+          <ngx-charts-advanced-pie-chart [results]="osPieData"
+                                         [label]='chartTitle'>
+          </ngx-charts-advanced-pie-chart>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-6">
+      <div class="card panel-default">
+        <div class="card-header">
+          <h4 class="card-title">Clicks by Browsers</h4>
+        </div>
+        <div class="card-body" *ngIf="browserPieData">
+          <ngx-charts-advanced-pie-chart [results]="browserPieData"
+                                         [label]='chartTitle'>
+          </ngx-charts-advanced-pie-chart>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <br />
+
+</div>

@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="page-header">
+    <h1>
+      Let's shorten a link
+      <small>It's free!</small>
+      <small>
+        <a routerLink="/links">
+          or go my links
+        </a>
+      </small>
+    </h1>
+
+    <!--  {{diagnostic}}-->
+    <form class="form" [formGroup]="linkForm" (ngSubmit)="onLinkFormSubmit()">
+      <input type="url" class="form-control" required placeholder="Enter your URL here" formControlName="link" />
+      <button type="submit" class="btn btn-success" [disabled]="!linkForm.valid">Shorten</button>
+      <div class="alert alert-success" role="alert" *ngIf="model.shortLink">
+        Success! You short link has been generated, here it is:
+        <a class="alert-link" href="{{model.shortLink}}" rel="nofollow" target="_blank">{{model.shortLink}}</a>
+      </div>
+      <div class="alert alert-danger" role="alert" *ngIf="error">
+        {{error}}
+      </div>
+    </form>
+  </div>
+
+</div>

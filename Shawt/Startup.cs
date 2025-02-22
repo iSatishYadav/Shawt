@@ -1,0 +1,147 @@
+using System.Linq;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using NLog;
+using Shawt.Data;
+using Shawt.Providers;
+using Shawt.Providers.RateLimiting;
+
+namespace Shawt
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            var rateLimitingConnection = Configuration.GetConnectionString(nameof(RateLimitingContext));
+            services.AddDbContext<RateLimitingContext>(options => options.UseSqlServer(rateLimitingConnection));
+
+            //load general configuration from appsettings.json
+            services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
+            // inject counter and rules stores           
+            services.AddScoped<IClientPolicyStore, SqlClientPolicyStore>();
+            services.AddScoped<IRateLimitCounterStore, SqlRateLimitCounterStore>();
+            // configuration (resolvers, counter key builders)
+            services.AddScoped<IRateLimitConfiguration, IdentityRateLimitConfiguration>();
+            services.AddScoped<ClientRateLimitOptions, ClientRateLimitOptions>();
+
+
+            var connection = Configuration.GetConnectionString(nameof(LinksContext));
+            services.AddDbContext<LinksContext>(options => options.UseSqlServer(connection));
+            services.AddHttpClient();
+            services.AddControllersWithViews();
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration["Authorization:Authority"];
+                    options.Audience = Configuration["Authorization:ClientId"];
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = Configuration["Authorization:NameClaimType"],
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["Authorization:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["Authorization:ClientId"],
+
+                        ValidateLifetime = true,
+                    };
+                });
+            services.AddTransient<ILinksProvider, LinksProvider>();
+            services.AddTransient<IShortUrlProvider, ShortUrlProvider>();
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            GlobalDiagnosticsContext.Set("connectionString", Configuration.GetConnectionString(nameof(LinksContext)));
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+                await next().ConfigureAwait(true);
+            });
+            var debugEnvironments = new[] { "Local", "PublicLocal" };
+            if (env.IsDevelopment() || debugEnvironments.Contains(env.EnvironmentName))
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
+            app.UseStaticFiles();
+            if (!debugEnvironments.Contains(env.EnvironmentName))
+            {
+                app.UseSpaStaticFiles();
+            }
+
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.Map("/api", api =>
+            {
+                api.UseRouting();
+                api.UseClientRateLimiting();
+                api.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller}/{action=Index}/{id?}");
+                });
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "ClientApp";
+
+                if (debugEnvironments.Contains(env.EnvironmentName))
+                {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200/");
+                    //spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
+
+        }
+    }
+}

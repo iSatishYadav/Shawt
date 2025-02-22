@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="page-header">
+    <h1>
+      My links
+      <small>
+        <a routerLink="/shorten">
+          or create a new one
+        </a>
+      </small>
+    </h1>
+  </div>
+  <p *ngIf="!links">
+    Please wait while we fetch your previously created links...
+  </p>
+  <!--<ol class="breadcrumb">
+    <li><a routerLink="/">Home</a></li>/
+    <li><a routerLink="/links">Links</a></li>
+  </ol>-->
+  <div *ngIf="graphData">
+    <h3 class="text-center">Top {{linksSummaryCount}} links</h3>
+    <div class="row">
+      <ngx-charts-tree-map [results]="graphData"
+                           [scheme]="colorScheme">
+      </ngx-charts-tree-map>
+    </div>
+  </div>
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-hover" *ngIf="links">
+        <thead>
+          <tr>
+            <th>Short Link</th>
+            <th>Clicks</th>
+            <th>Original Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let link of links">
+            <!--  <td (click)="onSelect(link)"><span class="glyphicon glyphicon-cog"></span> </td>-->
+            <td><a href="{{link.shortLink}}" target="_blank" (click)="shortLinkClicked(link)">{{link.shortLink}}</a></td>
+            <td><a class="badge badge-primary" routerLink="/link/{{link.id}}">{{link.clicks}}</a></td>
+            <td>{{link.originalLink.substring(0, 100)}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<!--<h1>Hello, {{authService.user ? (authService?.user?.profile?.name) : 'world'}}!</h1>
+<p>Welcome to the Link Shortening app.</p>
+<a class="btn btn-success" [routerLink]="['/shorten']">Sign-in</a>-->
+<!-- Masthead -->
+<header class="masthead text-white text-center">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <h1 class="mb-5">Create a short link, analyze your user traffic. For free!</h1>
+        <a class="btn btn-lg btn-primary" [routerLink]="['/shorten']">{{authService?.user ? "Shorten a Link" : "Sign-in"}}</a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Icons Grid -->
+<section class="features-icons bg-light text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+          <div class="features-icons-icon d-flex">
+            <i class="icon-screen-desktop m-auto text-primary"></i>
+          </div>
+          <h3>Usage dashboard</h3>
+          <p class="lead mb-0">Private usage dashboard to keep an eye on your link-clicks!</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+          <div class="features-icons-icon d-flex">
+            <i class="icon-layers m-auto text-primary"></i>
+          </div>
+          <h3>Analytics</h3>
+          <p class="lead mb-0">Find out from which OS and Browser, your traffic is coming from!</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+          <div class="features-icons-icon d-flex">
+            <i class="icon-check m-auto text-primary"></i>
+          </div>
+          <h3>Free</h3>
+          <p class="lead mb-0">Creating a short link is free, and always will be!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

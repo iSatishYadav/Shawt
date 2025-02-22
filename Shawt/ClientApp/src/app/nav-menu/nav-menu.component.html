@@ -1,0 +1,35 @@
+<header>
+  <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container">
+      <!--<a class="navbar-brand" [routerLink]="['/']">Shawt</a>-->
+      <a class="navbar-brand" [routerLink]="['/app']">
+        <img width="35" src="assets/img/logo_cut.jpg" />
+        <!--<img src="http://placehold.it/150x50?text=Logo" alt="">-->
+      </a>
+      <button class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+              aria-label="Toggle navigation"
+              [attr.aria-expanded]="isExpanded"
+              (click)="toggle()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+           [ngClass]="{ show: isExpanded }">
+        <ul class="navbar-nav flex-grow">
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/shorten']">Shorten a Link</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/links']">My Links</a>
+          </li>
+          <li *ngIf="authService.user" class="nav-item" [routerLinkActive]="['link-active']">
+            <img class="rounded-circle" style="height:30px; width:auto" *ngIf="authService?.user?.profile?.picture" src="{{authService?.user?.profile?.picture}}" alt="Profile picture of {{authService?.user?.profile?.name}}">
+            <!--<a class="nav-link text-dark" [routerLink]="['/profile']">{{authService?.user?.profile?.given_name}}</a>-->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
