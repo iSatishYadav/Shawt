@@ -48,5 +48,5 @@ jobs:
       if: github.ref == 'refs/heads/master' # Only deploy on master branch
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: ./Shawt/ClientApp/dist/clientapp
+        folder: ./Shawt/ClientApp/dist
         branch: gh-pages
