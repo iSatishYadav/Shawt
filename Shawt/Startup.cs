@@ -40,7 +40,7 @@ namespace Shawt
             // configuration (resolvers, counter key builders)
             services.AddScoped<IRateLimitConfiguration, IdentityRateLimitConfiguration>();
             services.AddScoped<ClientRateLimitOptions, ClientRateLimitOptions>();
-
+            services.AddScoped<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
             var connection = Configuration.GetConnectionString(nameof(LinksContext));
             services.AddDbContext<LinksContext>(options => options.UseSqlServer(connection));
