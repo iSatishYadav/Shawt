@@ -33,10 +33,14 @@ jobs:
     
     - name: Install Angular dependencies
       working-directory: ./Shawt/ClientApp
+      env:
+        NODE_OPTIONS: --openssl-legacy-provider
       run: npm install
     
     - name: Build Angular app
       working-directory: ./Shawt/ClientApp
+      env:
+        NODE_OPTIONS: --openssl-legacy-provider
       run: |
         npm run build -- --configuration production --base-href "/${{ github.event.repository.name }}/"
     
