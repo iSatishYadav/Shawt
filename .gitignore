@@ -11,3 +11,4 @@
 /Shawt.Models/bin
 /Shawt.Providers/bin
 /Shawt.Tests/bin
+*.proj
