@@ -1,0 +1,141 @@
+{
+  "configVersion": 1,
+  "timestamp": 1740221918059,
+  "index": "/Shawt/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/Shawt/index.html",
+        "/Shawt/main-es2015.2be6b244dbc89689ec42.js",
+        "/Shawt/main-es5.2be6b244dbc89689ec42.js",
+        "/Shawt/manifest.json",
+        "/Shawt/polyfills-es2015.0ef207fb7b4761464817.js",
+        "/Shawt/polyfills-es5.bc6aeefaf1fbb26509d2.js",
+        "/Shawt/runtime-es2015.e8a2810b3b08d6a1b6aa.js",
+        "/Shawt/runtime-es5.e8a2810b3b08d6a1b6aa.js",
+        "/Shawt/styles.c9279a2f8c2db6e65195.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/Shawt/Simple-Line-Icons.0cb0b9c589c0624c9c78.woff2",
+        "/Shawt/Simple-Line-Icons.2fe2efe63441d830b1ac.svg",
+        "/Shawt/Simple-Line-Icons.78f07e2c2a535c26ef21.woff",
+        "/Shawt/Simple-Line-Icons.d2285965fe34b0546504.ttf",
+        "/Shawt/Simple-Line-Icons.f33df365d6d0255b586f.eot",
+        "/Shawt/assets/fonts/Simple-Line-Icons.eot",
+        "/Shawt/assets/fonts/Simple-Line-Icons.svg",
+        "/Shawt/assets/fonts/Simple-Line-Icons.ttf",
+        "/Shawt/assets/fonts/Simple-Line-Icons.woff",
+        "/Shawt/assets/fonts/Simple-Line-Icons.woff2",
+        "/Shawt/assets/icons/icon-128x128.png",
+        "/Shawt/assets/icons/icon-144x144.png",
+        "/Shawt/assets/icons/icon-152x152.png",
+        "/Shawt/assets/icons/icon-192x192.png",
+        "/Shawt/assets/icons/icon-384x384.png",
+        "/Shawt/assets/icons/icon-512x512.png",
+        "/Shawt/assets/icons/icon-72x72.png",
+        "/Shawt/assets/icons/icon-96x96.png",
+        "/Shawt/assets/img/_bg-masthead.jpg",
+        "/Shawt/assets/img/bg-masthead.jpg",
+        "/Shawt/assets/img/logo.png",
+        "/Shawt/assets/img/logo_cut.jpg",
+        "/Shawt/assets/img/logo_transparent.png",
+        "/Shawt/bg-masthead.8230132bb0636c700550.jpg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "api",
+      "patterns": [
+        "\\/api"
+      ],
+      "strategy": "freshness",
+      "maxSize": 0,
+      "maxAge": 0,
+      "version": 1
+    },
+    {
+      "name": "redirect",
+      "patterns": [
+        "\\/r\\/[^/]*"
+      ],
+      "strategy": "freshness",
+      "maxSize": 0,
+      "maxAge": 0,
+      "version": 1
+    },
+    {
+      "name": "metadata",
+      "patterns": [
+        "\\/metadata"
+      ],
+      "strategy": "freshness",
+      "maxSize": 0,
+      "maxAge": 0,
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/Shawt/Simple-Line-Icons.0cb0b9c589c0624c9c78.woff2": "5da603104d4d6e362824ec9e7db32eb2d617949a",
+    "/Shawt/Simple-Line-Icons.2fe2efe63441d830b1ac.svg": "1f386718449d6dfd5b1ed48c264b8fe9337ec717",
+    "/Shawt/Simple-Line-Icons.78f07e2c2a535c26ef21.woff": "ddd21189de779f161634ddf307a0e1ebe30318ca",
+    "/Shawt/Simple-Line-Icons.d2285965fe34b0546504.ttf": "9ffb81a5a11112e292f2cc323e98486bad597599",
+    "/Shawt/Simple-Line-Icons.f33df365d6d0255b586f.eot": "ac66184202b5478e0b60305e19dc6de385b84bb5",
+    "/Shawt/assets/fonts/Simple-Line-Icons.eot": "ac66184202b5478e0b60305e19dc6de385b84bb5",
+    "/Shawt/assets/fonts/Simple-Line-Icons.svg": "1f386718449d6dfd5b1ed48c264b8fe9337ec717",
+    "/Shawt/assets/fonts/Simple-Line-Icons.ttf": "9ffb81a5a11112e292f2cc323e98486bad597599",
+    "/Shawt/assets/fonts/Simple-Line-Icons.woff": "ddd21189de779f161634ddf307a0e1ebe30318ca",
+    "/Shawt/assets/fonts/Simple-Line-Icons.woff2": "5da603104d4d6e362824ec9e7db32eb2d617949a",
+    "/Shawt/assets/icons/icon-128x128.png": "318e549e0079f73793923029a3bfba0be45901f9",
+    "/Shawt/assets/icons/icon-144x144.png": "091e59937a9510d1dae2710dbf1cb31fc7798919",
+    "/Shawt/assets/icons/icon-152x152.png": "c7f19f1e4928719d6636b05b963b28523c3e6445",
+    "/Shawt/assets/icons/icon-192x192.png": "8897dd145da43323c2810437545ecdba51437a32",
+    "/Shawt/assets/icons/icon-384x384.png": "0bf8d57524b6b35993aa8d17dc1302faba122d1d",
+    "/Shawt/assets/icons/icon-512x512.png": "d66dabee8b75abff1b96adcd7583bb2ee9c7f25d",
+    "/Shawt/assets/icons/icon-72x72.png": "62e397bad7306146f878713b06ad4d71fd88caed",
+    "/Shawt/assets/icons/icon-96x96.png": "4f386e1770815b47714089297708c224abeaef09",
+    "/Shawt/assets/img/_bg-masthead.jpg": "69bb4c2193d6d9943844e83c47ba92e108369d9d",
+    "/Shawt/assets/img/bg-masthead.jpg": "57d4f39098f6d3cc6c52151015093e14a7850840",
+    "/Shawt/assets/img/logo.png": "d9a3ce95519b32bf288e879fa7f53a6d88c08ebf",
+    "/Shawt/assets/img/logo_cut.jpg": "f6a277d78b206345ea5c1491f1eb640f9c4c34df",
+    "/Shawt/assets/img/logo_transparent.png": "a9d68ab1ff74f16f2d72e27db38a4513a28a4566",
+    "/Shawt/bg-masthead.8230132bb0636c700550.jpg": "57d4f39098f6d3cc6c52151015093e14a7850840",
+    "/Shawt/index.html": "35ccb5ca70fc11f45625d72bab47cd1e7959743d",
+    "/Shawt/main-es2015.2be6b244dbc89689ec42.js": "7fbf47777123f3751f8085fb53cd1a9f46437a97",
+    "/Shawt/main-es5.2be6b244dbc89689ec42.js": "b58cc027ed06ed7a3ce81d50198e66b52a94f70c",
+    "/Shawt/manifest.json": "86636d41d21ecbd11c7383bed0e9c474a82db293",
+    "/Shawt/polyfills-es2015.0ef207fb7b4761464817.js": "cf5cbfa9134716054fb479ab21362146cdf1f2ff",
+    "/Shawt/polyfills-es5.bc6aeefaf1fbb26509d2.js": "c1b326602e7b72c79de60cd3c2fd8f60a97bf078",
+    "/Shawt/runtime-es2015.e8a2810b3b08d6a1b6aa.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/Shawt/runtime-es5.e8a2810b3b08d6a1b6aa.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/Shawt/styles.c9279a2f8c2db6e65195.css": "e3a84598dc4252db1e3e172fab8d6e9dc9ae3659"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
