@@ -1,9 +1,6 @@
-﻿using AspNetCoreRateLimit;
+﻿using System.Threading.Tasks;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Shawt.Providers.RateLimiting
 {
@@ -15,9 +12,10 @@ namespace Shawt.Providers.RateLimiting
         {
             _contextAccessor = httpContextAccessor;
         }
-        public string ResolveClient()
+
+        public Task<string> ResolveClientAsync(HttpContext httpContext)
         {
-            return _contextAccessor.HttpContext.User.Identity.Name;
-        }        
+            return Task.FromResult(_contextAccessor.HttpContext.User.Identity.Name);
+        }
     }
 }

@@ -1,15 +1,12 @@
-﻿using AspNetCoreRateLimit;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Shawt.Data;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AspNetCoreRateLimit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Shawt.Data;
 
 namespace Shawt.Providers.RateLimiting
 {
@@ -52,7 +49,7 @@ namespace Shawt.Providers.RateLimiting
                 _logger.LogDebug("No policies found for {0}", clientId);
                 return (null);
             }
-            _logger.LogDebug("{0} policies found for {1}. {2}", rule.Count(), clientId, string.Join(" | ", rule.Select(x=> $"Endpoint: {x.Endpoint}, Limit: {x.Limit}, Period: {x.Period}")));
+            _logger.LogDebug("{0} policies found for {1}. {2}", rule.Count(), clientId, string.Join(" | ", rule.Select(x => $"Endpoint: {x.Endpoint}, Limit: {x.Limit}, Period: {x.Period}")));
             return
                  new ClientRateLimitPolicy
                  {

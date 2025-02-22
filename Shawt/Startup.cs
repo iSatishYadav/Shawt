@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -84,9 +85,9 @@ namespace Shawt
             GlobalDiagnosticsContext.Set("connectionString", Configuration.GetConnectionString(nameof(LinksContext)));
             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
-                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.TryAdd("X-XSS-Protection", "1; mode=block");
+                context.Response.Headers.TryAdd("X-Frame-Options", "SAMEORIGIN");
+                context.Response.Headers.TryAdd("X-Content-Type-Options", "nosniff");
 
                 await next().ConfigureAwait(true);
             });

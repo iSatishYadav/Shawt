@@ -1,13 +1,11 @@
-﻿using AspNetCoreRateLimit;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Shawt.Data;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AspNetCoreRateLimit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Shawt.Data;
 
 namespace Shawt.Providers.RateLimiting
 {
