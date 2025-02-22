@@ -50,7 +50,7 @@ jobs:
       env:
         NODE_OPTIONS: --openssl-legacy-provider
       run: |
-        npm run build -- --configuration production --base-href "/${{ github.event.repository.name }}/"
+        npm run build -- --configuration production
     
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/master' # Only deploy on master branch
