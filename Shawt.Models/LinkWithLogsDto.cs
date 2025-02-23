@@ -10,7 +10,7 @@ public class LinkWithLogsDto
     public string OriginalLink { get; set; }
     public string ShortLink { get; set; }
     public DateTime CreatedOn { get; set; }
-    public long Clicks { get; set; }
+    public int? Clicks { get; set; }
 
     public IEnumerable<LogDto> Logs { get; set; }
 

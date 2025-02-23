@@ -7,6 +7,6 @@ public class LinkDto
     public Guid Id { get; set; }
     public string OriginalLink { get; set; }
     public string ShortLink { get; set; }
-    public long Clicks { get; set; }
+    public int? Clicks { get; set; }
     public DateTime CreatedOn { get; set; }
 }
