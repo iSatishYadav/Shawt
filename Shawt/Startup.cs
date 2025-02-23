@@ -35,12 +35,12 @@ namespace Shawt
             //load general configuration from appsettings.json
             services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
             // inject counter and rules stores           
-            services.AddScoped<IClientPolicyStore, SqlClientPolicyStore>();
-            services.AddScoped<IRateLimitCounterStore, SqlRateLimitCounterStore>();
+            services.AddSingleton<IClientPolicyStore, SqlClientPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, SqlRateLimitCounterStore>();
             // configuration (resolvers, counter key builders)
-            services.AddScoped<IRateLimitConfiguration, IdentityRateLimitConfiguration>();
-            services.AddScoped<ClientRateLimitOptions, ClientRateLimitOptions>();
-            services.AddScoped<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+            services.AddSingleton<IRateLimitConfiguration, IdentityRateLimitConfiguration>();
+            services.AddSingleton<ClientRateLimitOptions, ClientRateLimitOptions>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
             var connection = Configuration.GetConnectionString(nameof(LinksContext));
             services.AddDbContext<LinksContext>(options => options.UseNpgsql(connection));
@@ -76,7 +76,6 @@ namespace Shawt
                 });
             services.AddTransient<ILinksProvider, LinksProvider>();
             services.AddTransient<IShortUrlProvider, ShortUrlProvider>();
-            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

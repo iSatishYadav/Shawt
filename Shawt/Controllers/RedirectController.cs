@@ -14,10 +14,8 @@ namespace Shawt.Controllers
     [AllowAnonymous]
     public class RedirectController(ILinksProvider linksProvider,
         IShortUrlProvider shortUrlProvider,
-        IHttpContextAccessor httpContextAccessor,
         ILogger<RedirectController> logger) : ControllerBase
     {
-        private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
 
         [Route("-{url}", Name = "RedirectToLink")]
         public async Task<IActionResult> Get(string url)
@@ -33,9 +31,9 @@ namespace Shawt.Controllers
             else
             {
                 logger.LogInformation("Original URL for {url} found. Here it is: {originalUrl}", url, originalUrl);
-                string ipAddress = _httpContext.Connection.RemoteIpAddress.ToString();
-                ipAddress = ipAddress == "::1" ? _httpContext.Connection.LocalIpAddress.ToString() : ipAddress;
-                string userAgent = _httpContext.Request.Headers.UserAgent;
+                string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+                ipAddress = ipAddress == "::1" ? HttpContext.Connection.LocalIpAddress.ToString() : ipAddress;
+                string userAgent = HttpContext.Request.Headers.UserAgent;
                 (string browser, string os, string device) = GetUserAgentDetails(userAgent);
                 await linksProvider.UpdateAccessStats(id, ipAddress, DateTime.Now, userAgent, browser, os, device);
                 originalUrl = !originalUrl.StartsWith("HTTP", StringComparison.CurrentCultureIgnoreCase) ? $"http://{originalUrl}" : originalUrl; //DevSkim: ignore DS137138
