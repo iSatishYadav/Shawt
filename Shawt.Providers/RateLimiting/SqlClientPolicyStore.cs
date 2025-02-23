@@ -26,7 +26,7 @@ public class SqlClientPolicyStore(IServiceProvider serviceProvider, ClientRateLi
         //var clientId = id.Replace("crlp_", string.Empty);
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<RateLimitingContext>();
-        Console.WriteLine("Getting Policy for Id: {id} using context: {context}", id, context.GetType().GetHashCode());
+        logger.LogDebug("Getting Policy for Id: {id}", id);
         var rules = await context.RateLimitRules.Where(x => x.ClientId == clientId).OrderByDescending(x => x.Id).ToListAsync(cancellationToken: cancellationToken);
 
         //var rules = await _context.RateLimitRules.Where(x => x.ClientId == clientId).OrderByDescending(x => x.Id).ToListAsync();
