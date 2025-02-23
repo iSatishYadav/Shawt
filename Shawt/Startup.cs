@@ -136,7 +136,7 @@ namespace Shawt
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller=Redirect}/{action=Get}/{id?}");
             });
 
             app.UseSpa(spa =>
