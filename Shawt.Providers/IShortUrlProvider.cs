@@ -1,8 +1,7 @@
-﻿namespace Shawt.Providers
+﻿namespace Shawt.Providers;
+
+public interface IShortUrlProvider
 {
-    public interface IShortUrlProvider
-    {
-        string Encode(int number);
-        int Decode(string encodedString);
-    }
+    string Encode(int number);
+    int Decode(string encodedString);
 }

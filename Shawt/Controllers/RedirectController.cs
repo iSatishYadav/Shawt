@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,50 +12,39 @@ namespace Shawt.Controllers
     //[Route("")]
     [ApiController]
     [AllowAnonymous]
-    public class RedirectController : ControllerBase
+    public class RedirectController(ILinksProvider linksProvider,
+        IShortUrlProvider shortUrlProvider,
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<RedirectController> logger) : ControllerBase
     {
-        private readonly HttpContext _httpContext;
-        private readonly ILinksProvider _linkProvider;
-        private readonly IShortUrlProvider _shortUrlProvider;
-        private readonly ILogger<RedirectController> _logger;
-
-        public RedirectController(ILinksProvider linksProvider,
-            IShortUrlProvider shortUrlProvider,
-            IHttpContextAccessor httpContextAccessor,
-            ILogger<RedirectController> logger)
-        {
-            _httpContext = httpContextAccessor.HttpContext;
-            _linkProvider = linksProvider;
-            _shortUrlProvider = shortUrlProvider;
-            _logger = logger;
-        }
+        private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
 
         [Route("-{url}", Name = "RedirectToLink")]
-        public IActionResult Get(string url)
+        public async Task<IActionResult> Get(string url)
         {
-            int id = _shortUrlProvider.Decode(url);
-            _logger.LogDebug("Getting link for {url}", url);
-            string originalUrl = _linkProvider.GetLink(id);
+            int id = shortUrlProvider.Decode(url);
+            logger.LogDebug("Getting link for {url}", url);
+            string originalUrl = linksProvider.GetLink(id);
             if (string.IsNullOrEmpty(originalUrl))
             {
-                _logger.LogWarning("URL {url} not found", url);
+                logger.LogWarning("URL {url} not found", url);
                 return NotFound();
             }
             else
             {
-                _logger.LogInformation("Original URL for {url} found. Here it is: {originalUrl}", url, originalUrl);
+                logger.LogInformation("Original URL for {url} found. Here it is: {originalUrl}", url, originalUrl);
                 string ipAddress = _httpContext.Connection.RemoteIpAddress.ToString();
                 ipAddress = ipAddress == "::1" ? _httpContext.Connection.LocalIpAddress.ToString() : ipAddress;
-                string userAgent = _httpContext.Request.Headers["User-Agent"];
+                string userAgent = _httpContext.Request.Headers.UserAgent;
                 (string browser, string os, string device) = GetUserAgentDetails(userAgent);
-                _linkProvider.UpdateAccessStats(id, ipAddress, DateTime.Now, userAgent, browser, os, device);
-                originalUrl = !originalUrl.ToUpper().StartsWith("HTTP") ? $"http://{originalUrl}" : originalUrl; //DevSkim: ignore DS137138
-                _logger.LogDebug("Redirecting from {url} to {originalUrl}", url, originalUrl);
+                await linksProvider.UpdateAccessStats(id, ipAddress, DateTime.Now, userAgent, browser, os, device);
+                originalUrl = !originalUrl.StartsWith("HTTP", StringComparison.CurrentCultureIgnoreCase) ? $"http://{originalUrl}" : originalUrl; //DevSkim: ignore DS137138
+                logger.LogDebug("Redirecting from {url} to {originalUrl}", url, originalUrl);
                 return Redirect(originalUrl);
             }
         }
 
-        private (string, string, string) GetUserAgentDetails(string userAgent)
+        private static (string, string, string) GetUserAgentDetails(string userAgent)
         {
             var uaParser = Parser.GetDefault();
             ClientInfo clientInfo = uaParser.Parse(userAgent);

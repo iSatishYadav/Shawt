@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Shawt.Models
+namespace Shawt.Models;
+
+public class LongUrl
 {
-    public class LongUrl
-    {
-        [Url]
-        public string Url { get; set; }
-    }
+    [Url]
+    public string Url { get; set; }
 }

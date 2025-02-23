@@ -2,20 +2,12 @@
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Http;
 
-namespace Shawt.Providers.RateLimiting
+namespace Shawt.Providers.RateLimiting;
+
+public class IdentityUserResolveContributer(IHttpContextAccessor httpContextAccessor) : IClientResolveContributor
 {
-    public class IdentityUserResolveContributer : IClientResolveContributor
+    public Task<string> ResolveClientAsync(HttpContext httpContext)
     {
-        private readonly IHttpContextAccessor _contextAccessor;
-
-        public IdentityUserResolveContributer(IHttpContextAccessor httpContextAccessor)
-        {
-            _contextAccessor = httpContextAccessor;
-        }
-
-        public Task<string> ResolveClientAsync(HttpContext httpContext)
-        {
-            return Task.FromResult(_contextAccessor.HttpContext.User.Identity.Name);
-        }
+        return Task.FromResult(httpContextAccessor.HttpContext.User.Identity.Name);
     }
 }

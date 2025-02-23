@@ -30,7 +30,7 @@ namespace Shawt
         public void ConfigureServices(IServiceCollection services)
         {
             var rateLimitingConnection = Configuration.GetConnectionString(nameof(RateLimitingContext));
-            services.AddDbContext<RateLimitingContext>(options => options.UseSqlServer(rateLimitingConnection));
+            services.AddDbContext<RateLimitingContext>(options => options.UseNpgsql(rateLimitingConnection));
 
             //load general configuration from appsettings.json
             services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
@@ -43,7 +43,7 @@ namespace Shawt
             services.AddScoped<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
             var connection = Configuration.GetConnectionString(nameof(LinksContext));
-            services.AddDbContext<LinksContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<LinksContext>(options => options.UseNpgsql(connection));
             services.AddHttpClient();
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

@@ -7,85 +7,77 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shawt.Data;
 
-namespace Shawt.Providers.RateLimiting
+namespace Shawt.Providers.RateLimiting;
+
+public class SqlRateLimitCounterStore(IServiceProvider serviceProvider) : IRateLimitCounterStore
 {
-    public class SqlRateLimitCounterStore : IRateLimitCounterStore
+    public Task<bool> ExistsAsync(string id, CancellationToken cancellationToken = default)
     {
-        private readonly IServiceProvider _serviceProvider;
+        throw new NotImplementedException();        
+    }
 
-        public SqlRateLimitCounterStore(IServiceProvider serviceProvider)
+    public async Task<RateLimitCounter?> GetAsync(string id, CancellationToken cancellationToken = default)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<RateLimitingContext>();
+        var counter = await context.RateLimitCounters.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
+        if (counter == null)
+            return (null);
+        return new RateLimitCounter
         {
-            _serviceProvider = serviceProvider;
-        }
-        public Task<bool> ExistsAsync(string id, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-            // return Task.FromResult(_context.RateLimitCounters.AsNoTracking().Any(x => x.Id == id));
-        }
+            Count = counter.Count,
+            Timestamp = counter.Timestamp
+        };
+    }
 
-        public async Task<RateLimitCounter?> GetAsync(string id, CancellationToken cancellationToken = default)
-        {
-            using var scope = _serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<RateLimitingContext>();
-            var counter = await context.RateLimitCounters.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
-            if (counter == null)
-                return (null);
-            return new RateLimitCounter
-            {
-                Count = counter.Count,
-                Timestamp = counter.Timestamp
-            };
-        }
+    public Task RemoveAsync(string id, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 
-        public Task RemoveAsync(string id, CancellationToken cancellationToken = default)
+    public async Task SetAsync(string id, RateLimitCounter? entry, TimeSpan? expirationTime = null, CancellationToken cancellationToken = default)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<RateLimitingContext>();
+        var counter = new RateLimitCounters
         {
-            throw new NotImplementedException();
+            Id = id,
+            Count = entry.Value.Count,
+            Timestamp = entry.Value.Timestamp
+        };
+        var existingCounter = await context.RateLimitCounters.FindAsync(id);
+        if (existingCounter == null)
+        {
+            context.Add(counter);
         }
-
-        public async Task SetAsync(string id, RateLimitCounter? entry, TimeSpan? expirationTime = null, CancellationToken cancellationToken = default)
+        else
         {
-            using var scope = _serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<RateLimitingContext>();
-            var counter = new RateLimitCounters
+            context.Entry(existingCounter).CurrentValues.SetValues(counter);
+        }
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException duce)
+        {
+            foreach (var item in duce.Entries)
             {
-                Id = id,
-                Count = entry.Value.Count,
-                Timestamp = entry.Value.Timestamp
-            };
-            var existingCounter = await context.RateLimitCounters.FindAsync(id);
-            if (existingCounter == null)
-            {
-                context.Add(counter);
-            }
-            else
-            {
-                context.Entry(existingCounter).CurrentValues.SetValues(counter);
-            }
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException duce)
-            {
-                foreach (var item in duce.Entries)
+                if (item.Entity is RateLimitCounters)
                 {
-                    if (item.Entity is RateLimitCounters)
+                    var proposedValues = item.CurrentValues;
+                    var databaseValues = item.GetDatabaseValues();
+                    foreach (var property in proposedValues.Properties)
                     {
-                        var proposedValues = item.CurrentValues;
-                        var databaseValues = item.GetDatabaseValues();
-                        foreach (var property in proposedValues.Properties)
-                        {
-                            var databaseValue = databaseValues?[property];
-                            //DesignChoice: Used database values in case of conflict
-                            //var proposedValue = proposedValues[property];
-                            proposedValues[property] = databaseValue;
-                        }
-                        item.OriginalValues.SetValues(databaseValues);
+                        var databaseValue = databaseValues?[property];
+                        //DesignChoice: Used database values in case of conflict
+                        //var proposedValue = proposedValues[property];
+                        proposedValues[property] = databaseValue;
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    item.OriginalValues.SetValues(databaseValues);
+                }
+                else
+                {
+                    throw;
                 }
             }
         }

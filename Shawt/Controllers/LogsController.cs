@@ -4,32 +4,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shawt.Data;
 
-namespace Shawt.Controllers
+namespace Shawt.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[Authorize]
+public class LogsController(LinksContext context) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    public class LogsController : ControllerBase
+
+    // GET: api/Logs/5
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<Log>> GetLog(Guid id)
     {
-        private readonly LinksContext _context;
+        var log = await context.Log.FindAsync(id);
 
-        public LogsController(LinksContext context)
+        if (log == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: api/Logs/5
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<Log>> GetLog(Guid id)
-        {
-            var log = await _context.Log.FindAsync(id);
-
-            if (log == null)
-            {
-                return NotFound();
-            }
-
-            return log;
-        }
+        return log;
     }
 }

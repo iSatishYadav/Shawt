@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Shawt.Models
+namespace Shawt.Models;
+
+public class Jwks
 {
-    public class Jwks
-    {
-        [JsonPropertyName("keys")]
-        public SigningKey[] Keys { get; set; }
-    }
+    [JsonPropertyName("keys")]
+    public SigningKey[] Keys { get; set; }
 }
