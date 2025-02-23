@@ -76,6 +76,16 @@ namespace Shawt
                 });
             services.AddTransient<ILinksProvider, LinksProvider>();
             services.AddTransient<IShortUrlProvider, ShortUrlProvider>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Specific",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44320", "https://beta.shawt.io")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,6 +97,7 @@ namespace Shawt
                 context.Response.Headers.TryAdd("X-XSS-Protection", "1; mode=block");
                 context.Response.Headers.TryAdd("X-Frame-Options", "SAMEORIGIN");
                 context.Response.Headers.TryAdd("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.TryAdd("Access-Control-Allow-Origin", "localhost:44320");
 
                 await next().ConfigureAwait(true);
             });
@@ -108,7 +119,7 @@ namespace Shawt
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseCors("Specific");
             app.Map("/api", api =>
             {
                 api.UseRouting();
