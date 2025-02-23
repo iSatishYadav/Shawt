@@ -61,12 +61,6 @@ import { RedirectComponent } from './redirect/redirect.component';
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [{
-    provide: 'bpclHomePageRedirectResolver',
-    useValue: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-      window.location.href = (route.data).externalUrl
-    }
-  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
