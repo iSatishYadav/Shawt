@@ -87,6 +87,7 @@ public class LinksProvider(LinksContext context, IShortUrlProvider shortUrlProvi
 
     public async Task UpdateAccessStats(int id, string ipAddress, DateTime timestamp, string userAgent, string browser, string os, string device)
     {
+        context.Link.Find(id).Clicks++;
         context.Log.Add(new Data.Log
         {
             LinkId = id,

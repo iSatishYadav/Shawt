@@ -110,7 +110,6 @@ namespace Shawt
             {
                 app.UseExceptionHandler("/Error");
             }
-            app.UseStaticFiles();
             if (!debugEnvironments.Contains(env.EnvironmentName))
             {
                 app.UseSpaStaticFiles();
@@ -139,6 +138,7 @@ namespace Shawt
                     pattern: "{controller=Redirect}/{action=Get}/{id?}");
             });
 
+            app.UseStaticFiles();
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
