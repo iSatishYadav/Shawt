@@ -9,7 +9,7 @@ using UAParser;
 
 namespace Shawt.Controllers
 {
-    //[Route("")]
+    [Route("r")]
     //[ApiController]
     [AllowAnonymous]
     public class RedirectController(ILinksProvider linksProvider,
@@ -17,7 +17,7 @@ namespace Shawt.Controllers
         ILogger<RedirectController> logger) : ControllerBase
     {
 
-        [Route("-{url}", Name = "RedirectToLink")]
+        [Route("{url}", Name = "RedirectToLink")]
         public async Task<IActionResult> Get(string url)
         {
             int id = shortUrlProvider.Decode(url);
