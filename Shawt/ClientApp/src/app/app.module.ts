@@ -57,7 +57,8 @@ import { RedirectComponent } from './redirect/redirect.component';
       { path: 'call-api', component: CallApiComponent, canActivate: [AuthGuardService] },
       { path: 'shorten', component: ShortenComponent, canActivate: [AuthGuardService] },
       { path: 'link/:id', component: LogsComponent, canActivate: [AuthGuardService] },
-      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] }
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] },
+      { path: '**', redirectTo: '/not-found' }
     ]),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
