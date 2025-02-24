@@ -10,7 +10,7 @@ using UAParser;
 namespace Shawt.Controllers
 {
     //[Route("")]
-    [ApiController]
+    //[ApiController]
     [AllowAnonymous]
     public class RedirectController(ILinksProvider linksProvider,
         IShortUrlProvider shortUrlProvider,
